@@ -4,11 +4,11 @@
   <img src="https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/media/logo.png" alt="VPN-UI Logo" width="260">
 </p>
 
-This project is an enhanced version of the **[3X-UI](https://github.com/MHSanaei/3x-ui)** panel (version 2.9.3). The goal of this project is to add various protocols and set it up as an all-in-one panel with support for **Xray-core** features.
+本项目是 **[3X-UI](https://github.com/MHSanaei/3x-ui)** 面板（2.9.3 版本）的增强版。本项目旨在添加多种协议，并将其打造成一个支持 **Xray-core** 各项功能的综合性面板。
 
-![Overview](https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/media/overview.png)
+![总览](https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/media/overview.png)
 
-## New Protocols
+## 新增协议
 
 - PPTP
 - L2TP (RAW)
@@ -18,45 +18,36 @@ This project is an enhanced version of the **[3X-UI](https://github.com/MHSanaei
 - SSTP
 - IKEv2
 - WireGuard (C)
-- AmneziaWG (obfuscated WireGuard)
-- GRE (site-to-site router tunnels, optionally over IPsec)
+- AmneziaWG（混淆版 WireGuard）
+- GRE（路由器之间的站点到站点隧道，可选择通过 IPsec 加密）
 - MTProto Proxy (Telegram)
 - SSH
 
-Plus three protocols added to the patched Xray-core itself, so they are served by
-the core rather than by a daemon, and they work as **inbounds and outbounds**:
+## 新增功能
 
-- AnyTLS
-- TUIC (v5)
-- NaiveProxy
+- **多管理员**，按 Inbound 授权，每个管理员只能看到分配给他的 Inbound
+- **分销商**账户，流量额度由管理员充值计量，且只能消耗在分配给它的 Inbound 上
+- 支持 **Client to Client** 功能，甚至可以实现 **Cross Inbound**（L2TP 用户与 OpenVPN 用户之间的内部互联）
+- 为 **Shadowsocks** 协议新增了 **AES-256-GCM** 和 **AES-128-GCM** 两种 **Encryption**
+- 在 **Inbound** 和 **Outbound** 中支持 **XHTTP Object**
+- **[WARP-CLI](https://github.com/Sir-MmD/warp-cli)**（Cloudflare 官方版本）自动安装脚本
+- 经过[补丁修复的 **Xray-core**](https://github.com/Sir-MmD/Xray-core) 内核，用于修复 **Shadowsocks** 协议中的「Unsupported Cipher」错误
+- 将所有文件（Geofile、Xray-core 以及 Backend 内核）打包进单个二进制文件中
+- 以 **TXT** 和 **PDF** 格式导出账户链接
+- 支持**冻结（Freeze）**账户
+- 为客户端和 Inbound 新增 **checkbox**
+- **Bulk Operation** 功能：
+    * 批量修改账户流量
+    * 批量修改账户时长
+    * 批量启用/禁用账户
+    * 批量删除账户
+    * 批量删除 Inbound
+    * 批量**冻结/解冻**账户
 
-## New Features
-
-- **Multi-Admin** with per-inbound access, so each admin only sees the inbounds you assign it
-- **Reseller** accounts with a metered traffic balance an admin recharges, spent only on the inbounds it was given
-- **Client to Client** support, even as **Cross Inbound** (an internal connection between an L2TP user and an OpenVPN user)
-- Added **AES-256-GCM** and **AES-128-GCM** **Encryption** to the **Shadowsocks** protocol
-- Support for **XHTTP Object** in **Inbound** and **Outbound**
-- Automatic installation script for **[WARP-CLI](https://github.com/Sir-MmD/warp-cli)** (Cloudflare's official version)
-- A [patched **Xray-core**](https://github.com/Sir-MmD/Xray-core) that fixes the "Unsupported Cipher" error in the **Shadowsocks** protocol, and adds **AnyTLS**, **TUIC** and **NaiveProxy** as native protocols, so they inherit per-account traffic accounting, speed limits, device limits and online detection instead of needing a second core
-- Bundling all files (**Geofile**, **Xray-core**, and **Backend** cores) into a single binary
-- **Real SSL for a bare server IP**, for a host with no domain at all (Let's Encrypt issues these; the certificate names the address itself)
-- Certificate renewals are picked up **without restarting the panel**, so nobody is disconnected when a certificate rolls over
-- Exporting account links as **TXT** and **PDF**
-- Ability to **Freeze** accounts
-- Added **checkboxes** to clients and **Inbound**s
-- **Bulk Operation** support:
-    * Bulk change of accounts' traffic
-    * Bulk change of accounts' days
-    * Bulk enable/disable of accounts
-    * Bulk delete of accounts
-    * Bulk delete of Inbounds
-    * Bulk **Freeze/Un-Freeze** of accounts
-
-## Tested Operating Systems
+## 已测试的操作系统
 
 
-| | Distribution |Version |Version |
+| | 发行版 |版本 |版本 |
 |:---:|:---|:---:|:---:|
 | <img src="https://cdn.simpleicons.org/ubuntu" width="32" height="32" alt="Ubuntu"> | **Ubuntu** | `24.04` | `26.04` |
 | <img src="https://cdn.simpleicons.org/debian" width="32" height="32" alt="Debian"> | **Debian** | `12` | `13` |
@@ -68,29 +59,29 @@ the core rather than by a daemon, and they work as **inbounds and outbounds**:
 
 
 > [!IMPORTANT]
-> It is strongly recommended that you install the panel on one of the tested operating systems, because there is a high chance that the new cores will not work correctly on other operating systems!
+> 强烈建议务必将面板安装在已测试的操作系统上；因为新内核在其他操作系统上无法正常工作的可能性很高！
 
 > [!NOTE]
-> **AmneziaWG runs on Debian 12/13 and Ubuntu 24.04/26.04 only.**
-> Unlike every other protocol, AmneziaWG is not in any distribution's kernel: the panel compiles its kernel module on your server during setup. That module currently fails to build in two cases. On **kernel 7.1 or newer** (Fedora 43/44, Arch) the kernel removed the `ipv6_stub` symbol the module still uses. On **AlmaLinux, Rocky Linux and CentOS Stream** the backported RHEL kernels collide with the module's compatibility layer, and EL10 is not recognised by it at all. Both are limitations of the upstream AmneziaWG module, with fixes still open upstream, so they are not something the panel can configure around.
-> Setup detects this and tells you, rather than failing silently. **Every other protocol works normally on all tested operating systems.**
+> **AmneziaWG 仅支持 Debian 12/13 与 Ubuntu 24.04/26.04。**
+> 与其他所有协议不同，AmneziaWG 并未包含在任何发行版的内核中：面板会在初始化过程中在您的服务器上编译它的内核模块。该模块目前在两种情况下会编译失败。在**内核 7.1 及更新版本**（Fedora 43/44、Arch）上，内核已移除该模块仍在使用的 `ipv6_stub` 符号。在 **AlmaLinux、Rocky Linux 与 CentOS Stream** 上，回溯移植的 RHEL 内核与该模块的兼容层相互冲突，而 EL10 更是完全无法被其识别。这两者都是 AmneziaWG 原始模块自身的限制，相关修复在上游项目中仍未合并，因此并不是面板可以通过配置绕开的问题。
+> 初始化过程会检测到这一点并提示您，而不会静默失败。**其他所有协议在全部已测试的操作系统上均可正常工作。**
 
-## Installing the Panel
+## 安装面板
 
 ```bash
 curl -Ls https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/deploy.sh | sudo bash
 ```
 
-## Uninstalling the Panel
+## 卸载面板
 
 ```bash
 sudo /opt/vpn-ui/vpn-ui-amd64 --uninstall
 ```
 
 > [!NOTE]
-> The database path, the **systemd** service, and all default ports have been changed, so you can install this panel alongside your other panels without any issues.
+> 数据库路径、systemd 服务以及所有默认端口均已更改，因此您可以将本面板与您的其他面板并存安装，而不会产生任何问题。
 
-## How the New Protocols Interact with Xray-core
+## 新增协议与 Xray-core 内核的交互方式
 
 ```mermaid
 flowchart TB
@@ -159,11 +150,11 @@ flowchart TB
   NET -.->|"replies (symmetric path back)"| OUT
 ```
 
-## How RBridge Handles Non-RADIUS Protocols
+## RBridge 如何整合非 RADIUS 协议
 
-WireGuard (C), AmneziaWG and the IKEv2 **PSK** / **EAP-TLS** modes authenticate with a public key or a certificate, so they never make a RADIUS round-trip. On their own they would get no session record, no traffic accounting, and no **User Limit** enforcement. **RBridge** (Radius Bridge) closes that gap: once per traffic tick its **Sweeper** polls each protocol's live tunnels, enforces quota, disable, and the per-account **User Limit** K (evicting the losers), then reconciles the survivors into the very same in-binary **RADIUS** session registry and **nftables** accounting the RADIUS protocols already use. A key-based protocol therefore behaves identically for usage, quota, and device limits, and egresses through the same Xray **dokodemo-door** data plane.
+WireGuard (C)、AmneziaWG 以及 IKEv2 的 **PSK** / **EAP-TLS** 模式使用公钥或证书进行认证，因此不会与 RADIUS 进行往返交互；若不加处理，它们将没有会话记录、没有流量计费，也没有 **User Limit** 限制。**RBridge**（Radius Bridge）正好弥补了这一空缺：在每个流量统计周期里，它的 **Sweeper** 会轮询（poll）每个协议的活动隧道，执行配额（quota）、禁用以及每账户的 **User Limit** K（并将多余者用 evict 驱逐），然后把存活的会话汇入 RADIUS 协议本就在用的同一套内置 **RADIUS** 会话注册表与 **nftables** 计费之中。如此一来，基于密钥的协议在用量、配额和设备数限制上表现完全一致，并通过同一个 Xray **dokodemo-door** 数据平面出网。
 
-For the two key-based tunnel protocols, **WireGuard (C)** and **AmneziaWG**, a **User Limit** of K provisions K device slots per account: K keypairs, K configs and K distinct tunnel IPs, one config per device. That is the same model the commercial providers use, and it is what makes a single account usable on a phone, a laptop and a router at once without the devices fighting over one key.
+对于两个基于密钥的隧道协议，即 **WireGuard (C)** 和 **AmneziaWG**，取值为 K 的 **User Limit** 会为每个账户分配 K 个设备位：K 对密钥、K 份配置和 K 个互不相同的隧道 IP，每台设备一份配置。这与商业服务商采用的模型相同，也正因如此，同一个账户才能同时在手机、笔记本和路由器上使用，而不会让多台设备争抢同一把密钥。
 
 ```mermaid
 flowchart TB
@@ -206,26 +197,26 @@ flowchart TB
   ACCT -.- XRAY
 ```
 
-## Building from Source
+## 从源码编译
 
 ```bash
 git clone https://github.com/Sir-MmD/vpn-ui.git && cd vpn-ui
 ./build.sh
 ```
 
-## E2E Testing
+## E2E 测试
 
-![E2E Test](https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/media/test_unit.png)
+![E2E 测试](https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/media/test_unit.png)
 
-A complete **E2E** test written in Python has been designed for this project inside the `test_unit` folder, which you are welcome to use. The steps are as follows:
+本项目在 `test_unit` 文件夹中设计了一套完整的、使用 Python 编写的 **E2E** 测试，您可以直接使用它。步骤如下：
 
-1. Go into the `test_unit` folder and enter your desired settings in `config.toml`.
-2. Run the `setup.sh` script.
-3. Place the compiled binary inside the `test_subject` folder.
-4. Run `run.sh` with `sudo` privileges.
+1. 进入 `test_unit` 文件夹，在 `config.toml` 中填写您想要的配置。
+2. 运行 `setup.sh` 脚本。
+3. 将编译好的二进制文件放入 `test_subject` 文件夹中。
+4. 以 `sudo` 权限运行 `run.sh`。
 
 > [!IMPORTANT]
-> The full E2E test is extremely time-consuming; if you have only made a small change to the project, it is better to test only that specific part using the `--tests` switch:
+> 完整的 E2E 测试非常耗时；如果您只对项目做了一处小改动，最好使用 `--tests` 开关只测试相应的那一部分：
 
 | Test ID | Description |
 | :--- | :--- |
@@ -257,13 +248,13 @@ A complete **E2E** test written in Python has been designed for this project ins
 | `uninstall` | `--uninstall` switch: install everything, tear down, assert clean host |
 | `export-js` | host-side Node TXT/PDF export test (no VM) |
 
-To test on only one specific operating system, you can use the `--only` switch:
+如果只想在某一个特定的操作系统上进行测试，也可以使用 `--only` 开关：
 
 ```bash
 sudo ./run.sh --only ubuntu-24
 ```
 
-## Donate
+## 捐赠
 
 🔹USDC-Polygon: ```0xdC2Ab962954e8fA1502C44656c5A32CF2979568C```
 

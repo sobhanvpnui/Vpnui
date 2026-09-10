@@ -4,11 +4,11 @@
   <img src="https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/media/logo.png" alt="VPN-UI Logo" width="260">
 </p>
 
-This project is an enhanced version of the **[3X-UI](https://github.com/MHSanaei/3x-ui)** panel (version 2.9.3). The goal of this project is to add various protocols and set it up as an all-in-one panel with support for **Xray-core** features.
+Bu proje, **[3X-UI](https://github.com/MHSanaei/3x-ui)** panelinin (2.9.3 sürümü) geliştirilmiş bir versiyonudur. Projenin amacı; çeşitli protokoller eklemek ve **Xray-core** özelliklerini destekleyen kapsamlı bir panel olarak hayata geçirmektir.
 
-![Overview](https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/media/overview.png)
+![Genel Görünüm](https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/media/overview.png)
 
-## New Protocols
+## Yeni Protokoller
 
 - PPTP
 - L2TP (RAW)
@@ -18,45 +18,36 @@ This project is an enhanced version of the **[3X-UI](https://github.com/MHSanaei
 - SSTP
 - IKEv2
 - WireGuard (C)
-- AmneziaWG (obfuscated WireGuard)
-- GRE (site-to-site router tunnels, optionally over IPsec)
+- AmneziaWG (gizlenmiş WireGuard)
+- GRE (yönlendiriciler arası site-to-site tüneller, isteğe bağlı olarak IPsec üzerinden)
 - MTProto Proxy (Telegram)
 - SSH
 
-Plus three protocols added to the patched Xray-core itself, so they are served by
-the core rather than by a daemon, and they work as **inbounds and outbounds**:
+## Yeni Özellikler
 
-- AnyTLS
-- TUIC (v5)
-- NaiveProxy
+- Inbound bazlı erişimle **Çoklu Yönetici**: her yönetici yalnızca kendisine atadığınız Inbound'ları görür
+- Yöneticinin yüklediği ölçülü trafik bakiyesiyle **Bayi** hesapları, yalnızca kendisine verilen Inbound'larda harcanır
+- **Client to Client** özelliği, hatta **Cross Inbound** biçiminde bile (bir L2TP kullanıcısının bir OpenVPN kullanıcısına dahili bağlantısı)
+- **Shadowsocks** protokolüne **AES-256-GCM** ve **AES-128-GCM** **Encryption** yöntemlerinin eklenmesi
+- **Inbound** ve **Outbound** içinde **XHTTP Object** desteği
+- **[WARP-CLI](https://github.com/Sir-MmD/warp-cli)** (Cloudflare'in resmi sürümü) için otomatik kurulum betiği
+- **Shadowsocks** protokolündeki «Unsupported Cipher» hatasını gidermek için [yamalanmış **Xray-core**](https://github.com/Sir-MmD/Xray-core) çekirdeği
+- Tüm dosyaların (Geofile, Xray-core ve Backend çekirdekleri) tek bir binary dosyası içinde paketlenmesi
+- Hesap bağlantılarının **TXT** ve **PDF** olarak dışa aktarılması
+- Hesapları **dondurma (Freeze)** özelliği
+- İstemcilere ve Inbound'lara **checkbox** eklenmesi
+- **Bulk Operation** özelliği:
+    * Hesapların trafiğini toplu değiştirme
+    * Hesapların süresini toplu değiştirme
+    * Hesapları toplu etkinleştirme/devre dışı bırakma
+    * Hesapları toplu silme
+    * Inbound'ları toplu silme
+    * Hesapları toplu **dondurma/çözme (Freeze/Un-Freeze)**
 
-## New Features
-
-- **Multi-Admin** with per-inbound access, so each admin only sees the inbounds you assign it
-- **Reseller** accounts with a metered traffic balance an admin recharges, spent only on the inbounds it was given
-- **Client to Client** support, even as **Cross Inbound** (an internal connection between an L2TP user and an OpenVPN user)
-- Added **AES-256-GCM** and **AES-128-GCM** **Encryption** to the **Shadowsocks** protocol
-- Support for **XHTTP Object** in **Inbound** and **Outbound**
-- Automatic installation script for **[WARP-CLI](https://github.com/Sir-MmD/warp-cli)** (Cloudflare's official version)
-- A [patched **Xray-core**](https://github.com/Sir-MmD/Xray-core) that fixes the "Unsupported Cipher" error in the **Shadowsocks** protocol, and adds **AnyTLS**, **TUIC** and **NaiveProxy** as native protocols, so they inherit per-account traffic accounting, speed limits, device limits and online detection instead of needing a second core
-- Bundling all files (**Geofile**, **Xray-core**, and **Backend** cores) into a single binary
-- **Real SSL for a bare server IP**, for a host with no domain at all (Let's Encrypt issues these; the certificate names the address itself)
-- Certificate renewals are picked up **without restarting the panel**, so nobody is disconnected when a certificate rolls over
-- Exporting account links as **TXT** and **PDF**
-- Ability to **Freeze** accounts
-- Added **checkboxes** to clients and **Inbound**s
-- **Bulk Operation** support:
-    * Bulk change of accounts' traffic
-    * Bulk change of accounts' days
-    * Bulk enable/disable of accounts
-    * Bulk delete of accounts
-    * Bulk delete of Inbounds
-    * Bulk **Freeze/Un-Freeze** of accounts
-
-## Tested Operating Systems
+## Test Edilen İşletim Sistemleri
 
 
-| | Distribution |Version |Version |
+| | Dağıtım |Sürüm |Sürüm |
 |:---:|:---|:---:|:---:|
 | <img src="https://cdn.simpleicons.org/ubuntu" width="32" height="32" alt="Ubuntu"> | **Ubuntu** | `24.04` | `26.04` |
 | <img src="https://cdn.simpleicons.org/debian" width="32" height="32" alt="Debian"> | **Debian** | `12` | `13` |
@@ -68,29 +59,29 @@ the core rather than by a daemon, and they work as **inbounds and outbounds**:
 
 
 > [!IMPORTANT]
-> It is strongly recommended that you install the panel on one of the tested operating systems, because there is a high chance that the new cores will not work correctly on other operating systems!
+> Paneli mutlaka test edilen işletim sistemlerine kurmanız önerilir; çünkü yeni çekirdeklerin diğer işletim sistemlerinde düzgün çalışmama ihtimali yüksektir!
 
 > [!NOTE]
-> **AmneziaWG runs on Debian 12/13 and Ubuntu 24.04/26.04 only.**
-> Unlike every other protocol, AmneziaWG is not in any distribution's kernel: the panel compiles its kernel module on your server during setup. That module currently fails to build in two cases. On **kernel 7.1 or newer** (Fedora 43/44, Arch) the kernel removed the `ipv6_stub` symbol the module still uses. On **AlmaLinux, Rocky Linux and CentOS Stream** the backported RHEL kernels collide with the module's compatibility layer, and EL10 is not recognised by it at all. Both are limitations of the upstream AmneziaWG module, with fixes still open upstream, so they are not something the panel can configure around.
-> Setup detects this and tells you, rather than failing silently. **Every other protocol works normally on all tested operating systems.**
+> **AmneziaWG yalnızca Debian 12/13 ve Ubuntu 24.04/26.04 üzerinde çalışır.**
+> Diğer tüm protokollerin aksine AmneziaWG hiçbir dağıtımın çekirdeğinde yer almaz: panel, kurulum sırasında çekirdek modülünü sizin sunucunuzda derler. Bu modül şu anda iki durumda derlenemiyor. **Çekirdek 7.1 ve üzerinde** (Fedora 43/44, Arch) çekirdek, modülün hâlâ kullandığı `ipv6_stub` sembolünü kaldırdı. **AlmaLinux, Rocky Linux ve CentOS Stream** üzerinde ise geriye uyarlanmış (backport) RHEL çekirdekleri modülün uyumluluk katmanıyla çakışıyor; EL10 ise bu katman tarafından hiç tanınmıyor. Her ikisi de AmneziaWG modülünün kendi sınırlamalarıdır ve düzeltmeleri ana projede hâlâ beklemektedir, dolayısıyla panelin ayarlarla aşabileceği şeyler değildir.
+> Kurulum bunu tespit edip size bildirir, sessizce başarısız olmaz. **Diğer tüm protokoller, test edilen tüm işletim sistemlerinde normal şekilde çalışır.**
 
-## Installing the Panel
+## Panel Kurulumu
 
 ```bash
 curl -Ls https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/deploy.sh | sudo bash
 ```
 
-## Uninstalling the Panel
+## Panel Kaldırma
 
 ```bash
 sudo /opt/vpn-ui/vpn-ui-amd64 --uninstall
 ```
 
 > [!NOTE]
-> The database path, the **systemd** service, and all default ports have been changed, so you can install this panel alongside your other panels without any issues.
+> Veritabanı yolu, systemd servisi ve tüm varsayılan portlar değiştirildi; bu yüzden bu paneli hiçbir sorun yaşamadan diğer panellerinizin yanına kurabilirsiniz.
 
-## How the New Protocols Interact with Xray-core
+## Yeni Protokollerin Xray-core Çekirdeği ile Etkileşimi
 
 ```mermaid
 flowchart TB
@@ -159,11 +150,11 @@ flowchart TB
   NET -.->|"replies (symmetric path back)"| OUT
 ```
 
-## How RBridge Handles Non-RADIUS Protocols
+## RBridge, RADIUS Kullanmayan Protokolleri Nasıl Entegre Eder
 
-WireGuard (C), AmneziaWG and the IKEv2 **PSK** / **EAP-TLS** modes authenticate with a public key or a certificate, so they never make a RADIUS round-trip. On their own they would get no session record, no traffic accounting, and no **User Limit** enforcement. **RBridge** (Radius Bridge) closes that gap: once per traffic tick its **Sweeper** polls each protocol's live tunnels, enforces quota, disable, and the per-account **User Limit** K (evicting the losers), then reconciles the survivors into the very same in-binary **RADIUS** session registry and **nftables** accounting the RADIUS protocols already use. A key-based protocol therefore behaves identically for usage, quota, and device limits, and egresses through the same Xray **dokodemo-door** data plane.
+WireGuard (C), AmneziaWG ve IKEv2'nin **PSK** / **EAP-TLS** modları açık anahtar veya sertifika ile kimlik doğrular; bu yüzden RADIUS ile gidiş-geliş yapmazlar ve aksi hâlde ne oturum kaydı, ne trafik muhasebesi, ne de **User Limit** uygulaması olurdu. **RBridge** (Radius Bridge) bu boşluğu kapatır: her trafik döngüsünde bir kez, **Sweeper** her protokolün canlı tünellerini yoklar (poll), kotayı (quota), devre dışı bırakmayı ve hesap başına **User Limit** K'yı uygular (fazlalıkları evict ile atarak), ardından hayatta kalanları RADIUS protokollerinin zaten kullandığı aynı gömülü **RADIUS** oturum kayıt defterine ve aynı **nftables** muhasebesine reconcile eder. Böylece anahtar tabanlı bir protokol kullanım, kota ve cihaz limiti açısından tıpatıp aynı davranır ve aynı Xray **dokodemo-door** veri düzleminden internete çıkar.
 
-For the two key-based tunnel protocols, **WireGuard (C)** and **AmneziaWG**, a **User Limit** of K provisions K device slots per account: K keypairs, K configs and K distinct tunnel IPs, one config per device. That is the same model the commercial providers use, and it is what makes a single account usable on a phone, a laptop and a router at once without the devices fighting over one key.
+Anahtar tabanlı iki tünel protokolünde, **WireGuard (C)** ve **AmneziaWG**, K değerindeki bir **User Limit** her hesaba K adet cihaz yuvası ayırır: K anahtar çifti, K yapılandırma dosyası ve K farklı tünel IP'si, yani her cihaz için ayrı bir yapılandırma. Bu, ticari sağlayıcıların kullandığı modelin aynısıdır ve tek bir hesabın telefonda, dizüstünde ve router'da aynı anda, cihazlar tek bir anahtar için çekişmeden kullanılabilmesini sağlar.
 
 ```mermaid
 flowchart TB
@@ -206,26 +197,26 @@ flowchart TB
   ACCT -.- XRAY
 ```
 
-## Building from Source
+## Kaynaktan Derleme
 
 ```bash
 git clone https://github.com/Sir-MmD/vpn-ui.git && cd vpn-ui
 ./build.sh
 ```
 
-## E2E Testing
+## E2E Testi
 
-![E2E Test](https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/media/test_unit.png)
+![E2E Testi](https://raw.githubusercontent.com/Sir-MmD/vpn-ui/refs/heads/main/media/test_unit.png)
 
-A complete **E2E** test written in Python has been designed for this project inside the `test_unit` folder, which you are welcome to use. The steps are as follows:
+Bu proje için `test_unit` klasörü içinde Python ile tam bir **E2E** testi tasarlandı; bunu kullanabilirsiniz. Adımları şöyledir:
 
-1. Go into the `test_unit` folder and enter your desired settings in `config.toml`.
-2. Run the `setup.sh` script.
-3. Place the compiled binary inside the `test_subject` folder.
-4. Run `run.sh` with `sudo` privileges.
+1. `test_unit` klasörüne girin ve istediğiniz ayarları `config.toml` içine girin.
+2. `setup.sh` betiğini çalıştırın.
+3. Derlenmiş binary dosyasını `test_subject` klasörünün içine koyun.
+4. `run.sh` betiğini `sudo` yetkisiyle çalıştırın.
 
 > [!IMPORTANT]
-> The full E2E test is extremely time-consuming; if you have only made a small change to the project, it is better to test only that specific part using the `--tests` switch:
+> Tam E2E testi son derece zaman alıcıdır; eğer projede yalnızca küçük bir değişiklik yaptıysanız, `--tests` switch'i ile yalnızca o bölümü test etmeniz daha iyi olur:
 
 | Test ID | Description |
 | :--- | :--- |
@@ -257,13 +248,13 @@ A complete **E2E** test written in Python has been designed for this project ins
 | `uninstall` | `--uninstall` switch: install everything, tear down, assert clean host |
 | `export-js` | host-side Node TXT/PDF export test (no VM) |
 
-To test on only one specific operating system, you can use the `--only` switch:
+Yalnızca belirli bir işletim sisteminde test yapmak için de `--only` switch'ini kullanabilirsiniz:
 
 ```bash
 sudo ./run.sh --only ubuntu-24
 ```
 
-## Donate
+## Bağış
 
 🔹USDC-Polygon: ```0xdC2Ab962954e8fA1502C44656c5A32CF2979568C```
 
